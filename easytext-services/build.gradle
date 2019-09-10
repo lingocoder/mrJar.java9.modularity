@@ -1,0 +1,51 @@
+plugins{ 
+    id 'java-library'
+    id 'com.lingocoder.mrjar' version '0.0.9'
+    id 'eclipse'
+    id 'application'
+    id 'com.google.osdetector' version '1.6.2'
+    id 'com.github.hierynomus.license' version '0.15.0'
+}
+
+ext.platform = osdetector.os == 'osx' ? 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os
+
+apply( from: file( '../licensing/license-format.gradle' ) )
+
+repositories {
+
+    jcenter( )
+    
+    flatDir {
+        dirs 'build/libs'
+    }
+}
+
+group 'com.lingocoder'
+version '0.0.0'
+
+sourceCompatibility = 1.9
+targetCompatibility  = 1.9
+
+mrjar{
+
+    releases =[ JavaVersion.VERSION_1_9]
+
+    useModuleSourcePath = true
+
+    main = 'easytext.gui/javamodularity.easytext.gui.Main'
+
+    args = ['../exampletext.txt']
+
+    isModular = true
+}
+
+dependencies{
+    
+    implementation "org.openjfx:javafx-base:11:$platform"
+    implementation "org.openjfx:javafx-graphics:11:$platform"
+    implementation "org.openjfx:javafx-controls:11:$platform"
+
+    implementation fileTree(dir: "build/libs", includes: ['*.jar'])
+}
+
+run.dependsOn assemble

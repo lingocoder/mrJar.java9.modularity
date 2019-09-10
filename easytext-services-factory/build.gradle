@@ -1,0 +1,43 @@
+plugins{ 
+    id 'java-library'
+    id 'com.lingocoder.mrjar' version '0.0.9'
+    id 'eclipse'
+    id 'application'
+    id 'com.github.hierynomus.license' version '0.15.0'    
+}
+
+apply( from: file( '../licensing/license-format.gradle' ) )
+
+repositories {
+
+    jcenter( )
+    
+    flatDir {
+        dirs 'build/libs'
+    }
+}
+
+group 'com.lingocoder'
+version '0.0.0'
+
+sourceCompatibility = 1.9
+targetCompatibility  = 1.9
+
+mrjar{
+
+    releases =[ JavaVersion.VERSION_1_9]
+
+    useModuleSourcePath = true
+
+    main = 'easytext.cli/javamodularity.easytext.cli.Main'
+
+    args = ['../exampletext.txt']
+    
+    isModular = true
+}
+
+dependencies{
+    implementation fileTree(dir: "build/libs", includes: ['*.jar'])
+}
+
+run.dependsOn assemble

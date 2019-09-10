@@ -1,0 +1,63 @@
+sourceSets {
+
+    integrationTest {
+        groovy { srcDir file( 'src/integrationTest/groovy' ) }
+        java { srcDir file( 'src/integrationTest/java' ) }
+
+        resources { srcDir file( 'src/integrationTest/resources' ) }
+        compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
+        runtimeClasspath += output + compileClasspath
+    }
+
+    gradlePlugin.testSourceSets( sourceSets.integrationTest )
+    configurations.integrationTestImplementation.extendsFrom( configurations.testImplementation )
+
+    functionalTest {
+        groovy { srcDir file( 'src/functionalTest/groovy' ) }
+        java { srcDir file( 'src/functionalTest/java' ) }
+
+        resources {
+            srcDir file( 'src/functionalTest/resources' )
+        }
+        compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
+        runtimeClasspath += output + compileClasspath
+    }
+
+    gradlePlugin.testSourceSets( sourceSets.functionalTest )
+    configurations.functionalTestImplementation.extendsFrom( configurations.testImplementation )
+
+/*    
+    java9 {
+      java {
+       srcDirs = ['src/main/java9']
+      }
+   }
+   
+   java11 {
+      java {
+       srcDirs = ['src/main/java11']
+      }
+   }
+*/
+}
+
+task integrationTest( type: Test ) {
+    group 'Verification'
+    description 'Runs the integration tests.'
+/*    println sourceSets.integrationTest.output.properties*/
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+task functionalTest( type: Test ) {
+    group 'Verification'
+    description 'Runs the functional tests.'
+/*    println sourceSets.functionalTest.output.properties*/
+    testClassesDirs = sourceSets.functionalTest.output.classesDirs
+    classpath = sourceSets.functionalTest.runtimeClasspath
+
+}
+
+check.dependsOn integrationTest
+check.dependsOn functionalTest
+
