@@ -1,12 +1,1 @@
-pluginManagement{
-    repositories{
-        maven{
-            url = uri('file:///Z:/staging/consuming/maven-repo')
-        }
-        mavenLocal( )
-        gradlePluginPortal( )
-    }
-}
-
-
 rootProject.name = 'providers'
