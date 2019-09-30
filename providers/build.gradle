@@ -1,6 +1,6 @@
 plugins{ 
     id 'java-library'
-    id 'com.lingocoder.mrjar' version '0.0.12'
+    id 'com.lingocoder.mrjar' version '0.0.13'
     id 'eclipse'
     id 'application'
     id 'com.github.hierynomus.license' version '0.15.0'
